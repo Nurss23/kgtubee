@@ -18,6 +18,7 @@
     <h1>Все видео</h1>
     {% for video in videos_list %}
         <div>
+            <!-- {{ video.name }} -->
             <a href="/video/{{ video.id }}/">
                 {{ video.name }}
             </a>
