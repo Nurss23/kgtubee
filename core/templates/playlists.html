@@ -15,10 +15,13 @@
         <a href="/playlists/">Плейлисты</a> |
         <a href="/videos/">Список видео</a>
     </nav>
-    <h2>Все плейлисты</h2>
+    <h1>Все плейлисты</h1>
     {% for object in objects_list %}
-        <div>{{ object.name }}</div>
+        <div>
+            <a href="/playlist/{{ object.id }}/">
+                {{ object.name }}
+            </a>
+        </div>
     {% endfor %}
-    
 </body>
 </html>

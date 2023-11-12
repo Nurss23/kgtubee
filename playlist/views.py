@@ -14,3 +14,7 @@ def playlists(request):
         'playlists.html',
         context
     )
+
+def playlist(request, id):
+    playlist_object = UserPlayList.objects.get(id=id)
+    return render(request, 'playlist.html', {"playlists": playlist_object})

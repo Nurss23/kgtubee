@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from core.views import homepage, about_view, contacts_view, team_view
-from playlist.views import playlists
+from playlist.views import playlists, playlist
 from video.views import videos, video
 from django.conf import settings
 from django.conf.urls.static import static
@@ -32,6 +32,7 @@ urlpatterns = [
     path('playlists/', playlists),
     path('videos/', videos),
     path('video/<int:id>/',video),
+    path('playlist/<int:id>/',playlist),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
