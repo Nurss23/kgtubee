@@ -4,7 +4,12 @@
     <h1>{{ playlist_object.name }}</h1>
     <h2>Просмотры: {{ playlist_object.views_qty }}</h2>
     <h2>Количество видео: {{ playlist_object.videos_qty }}</h2>
+    <a href="{% url 'playlist-update' playlist_object.id %}" class="btn btn-warning">Изменить</a>
+    <a href="{% url 'playlist-delete' playlist_object.id %}" class="btn btn-danger">Удалить</a>
+    <hr>
+    <h2>Описание</h2>
     <div>
         {{ playlist_object.description }}
     </div>
+    
 {% endblock %}

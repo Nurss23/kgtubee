@@ -41,6 +41,7 @@ urlpatterns = [
     path('video-add/', video_add, name='video-add'),
     path('search/', search, name='search'), # from core.views import search
     path('playlist-update/<int:id>/', playlist_update, name='playlist-update'),
+    path('playlist-delete/<int:id>/', playlist_delete, name='playlist-delete'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

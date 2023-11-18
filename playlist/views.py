@@ -18,7 +18,7 @@ def playlists(request):
 
 def playlist(request, id):
     playlist_object = UserPlayList.objects.get(id=id)
-    return render(request, 'playlist.html', {"playlist": playlist_object})
+    return render(request, 'playlist.html', {"playlist": playlist_object})  
 
 def playlist_add(request):
     if request.method == "POST":
@@ -63,10 +63,15 @@ def playlist_update(request, id):
     context = {"playlist": playlist_object}
 
     if request.method == "POST":
-        name = request.POST["playlist_name"] # str 
+        name = request.POST["playlist_name"]
         # description = request.POST["description"] # str
         playlist_object.name = name
         playlist_object.save()
-        return redirect(playlist, id=playlist_object.id)
+        return redirect(playlist_info, id=playlist_object.id)
  
-    return render(request, 'playlist_update.html', context)
+    return render(request, "playlist_update.html", context)
+
+def playlist_delete(request, id):
+    playlist_object = UserPlayList.objects.get(id=id)
+    playlist_object.delete()
+    return redirect(playlists)
