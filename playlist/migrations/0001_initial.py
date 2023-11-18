@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='UserPlayList',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file_path', models.FileField(upload_to='playlist/')),
+                # ('file_path', models.FileField(upload_to='playlist/')),
                 ('name', models.CharField(max_length=55)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('videos_qty', models.IntegerField(default=0)),

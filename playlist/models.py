@@ -2,7 +2,7 @@ from django.db import models
 
 
 class UserPlayList(models.Model):
-    file_path = models.FileField(upload_to="playlist/")
+    # file_path = models.FileField(upload_to="playlist/")
     name = models.CharField(max_length=55)
     description = models.TextField(null=True, blank=True)
     videos_qty = models.IntegerField(default=0)

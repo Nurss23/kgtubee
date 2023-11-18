@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <h1>Все видео</h1>
-    {% for video in videos_list %}
-        <div class="container mt-3">
-            <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="/video/{{ video.id }}/">{{ video.name }}</a>
-                <span class="badge bg-primary rounded-pill">Лайков: {{ video.likes }}</span>
-            </li>
-            </ul>
-        </div>
-        <!-- <div class="container mt-3">
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item">
-                    <a href="/video/{{ video.id }}/">{{ video.name }}</a>
-                    <span class="badge bg-primary rounded-pill">Лайков: {{ video.likes }}</span>
-                </li>
-            </ol>
-        </div> -->
-    {% endfor %}
+    <div class="row">
+        {% for video in videos_list  %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a href="/video/{{ video.id }}/">
+                    <video width="95%">
+                        <source src="{{ video.file_path.url }}">
+                    </video>
+                    <h3>{{ video.name }}</h3>
+                    <span><img height="20px" src="{% static 'like.svg' %}" alt=""> {{ video.likes }}</span> 
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

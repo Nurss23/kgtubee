@@ -16,9 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import homepage, about_view, contacts_view, team_view
-from playlist.views import playlists, playlist
-from video.views import videos, video
+from core.views import *
+from playlist.views import *
+from video.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -32,7 +32,15 @@ urlpatterns = [
     path('playlists/', playlists),
     path('videos/', videos),
     path('video/<int:id>/',video),
-    path('playlist/<int:id>/',playlist),
+    # path('playlist/<int:id>/',playlist),
+    path('playlist/<int:id>/', playlist_info, name='playlist-info'),
+    path('playlist-add/', playlist_add, name ='playlist-add'),
+    path('playlist-df/add/', playlist_df_add, name='playlist-df-add'),
+    path('video-update/<int:id>/', video_update, name='video-update'),
+    path('video-delete/<int:id>/', video_delete, name='video-delete'),
+    path('video-add/', video_add, name='video-add'),
+    path('search/', search, name='search'), # from core.views import search
+    path('playlist-update/<int:id>/', playlist_update, name='playlist-update'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,24 +1,46 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Video
 
-# Create your views here.
-# def video(request):
-#     query_result = Video.objects.all()
-
-#     context = {"objects_list": query_result}
-
-#     return render(
-#         request,
-#         'videos.html',
-#         context
-#     )
 
 def videos(request):
     videos_list = Video.objects.all()
     context = {"videos_list": videos_list}
     return render(request, 'videos.html', context)
 
-
 def video(request, id):
+    # 7
+    # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
     return render(request, 'video.html', {"video": video_object})
+
+def video_add(request):
+    if request.method == "GET":
+        return render(request, 'video_add.html')
+    elif request.method == "POST":
+        name = request.POST["video_name"]
+        video_file = request.FILES["video_file"]
+        video_object = Video(
+            name=name,
+            file_path=video_file,
+        )
+        # video_object.description = "hello world"
+        # INSERT INTO ...
+        video_object.save()
+        return redirect(video, id=video_object.id)
+
+def video_update(request, id):
+    video_object = Video.objects.get(id=id)
+    context = {"video": video_object}
+
+    if request.method == "POST":
+        name = request.POST["video_name"]
+        video_object.name = name
+        video_object.save()
+        return redirect(video, id=video_object.id)
+
+    return render(request, 'video_update.html', context)
+
+def video_delete(request, id):
+    video_object = Video.objects.get(id=id)
+    video_object.delete()
+    return redirect(videos)

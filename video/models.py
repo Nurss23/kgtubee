@@ -1,4 +1,5 @@
 from django.db import models
+from playlist.models import UserPlayList
 
 # Create your models here.
 class Video(models.Model):
@@ -7,6 +8,5 @@ class Video(models.Model):
     likes = models.IntegerField(default=0) # int
     description = models.TextField(null=True) # text # blank = False
     is_published = models.BooleanField(default=True) # boolean 
-
     def __str__(self):
         return self.name
