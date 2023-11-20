@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
+from .forms import CommentForm
+from django.contrib import messages
 
 
 def videos(request):
@@ -12,7 +14,27 @@ def video(request, id):
     # 7
     # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
-    return render(request, 'video.html', {"video": video_object})
+    video_object = Video.objects.get(id=id)
+    context = {}
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False) # ещё нет записи в БД
+            comment.user = request.user
+            comment.video = video_object
+            comment.save() # сохраняем в БД
+            messages.success(request, 'Комментарий успешно добавлен.')
+            return redirect(video, id=video_object.id)
+        else:
+            messages.error(request, 'Ошибка! Данные не валидны')
+
+    context = {
+        "video": video_object,
+        "comment_form": CommentForm()
+
+    }
+    return render(request, 'video.html', context)
 
 def video_add(request):
     if request.method == "GET":
@@ -60,11 +82,14 @@ def video_df_add(request):
 
 # def comment_add(request):
 #     context = {}
-#     if request.method == 'POST':
+#     if request.method == "POST":
 #         com_form = CommentForm(request.POST)
 #         if com_form.is_valid():
 #             com_obj = com_form.save()
 #             return redirect(video, id=com_obj.id)
-#         com_form = CommentForm()
-#         user = Comment.objects.all()
-#     return render(request, 'name.html', {'form': form, 'names': names})
+        
+#     com_form = CommentForm()
+#     # user = Comment.objects.all()
+#     context["com_form"] = com_form
+#     return render(request, "video.html", context)
+#     # return render(request, 'video.html', {'form': form, 'names': names})

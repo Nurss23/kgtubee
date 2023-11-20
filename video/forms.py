@@ -9,5 +9,5 @@ class VideoForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        txt = Comment
+        model = Comment
         fields = ['txt']
