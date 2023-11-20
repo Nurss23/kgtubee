@@ -34,14 +34,15 @@ urlpatterns = [
     path('video/<int:id>/',video),
     # path('playlist/<int:id>/',playlist),
     path('playlist/<int:id>/', playlist_info, name='playlist-info'),
+    path('video-add/', video_add, name='video-add'),
     path('playlist-add/', playlist_add, name ='playlist-add'),
-    path('playlist-df/add/', playlist_df_add, name='playlist-df-add'),
     path('video-update/<int:id>/', video_update, name='video-update'),
     path('video-delete/<int:id>/', video_delete, name='video-delete'),
-    path('video-add/', video_add, name='video-add'),
     path('search/', search, name='search'), # from core.views import search
     path('playlist-update/<int:id>/', playlist_update, name='playlist-update'),
     path('playlist-delete/<int:id>/', playlist_delete, name='playlist-delete'),
+    path('playlist-df/add/', playlist_df_add, name='playlist-df-add'),
+    path('video-df/add/', video_df_add, name='video-df-add'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

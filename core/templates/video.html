@@ -12,6 +12,8 @@
     <hr>
     <h2>Комментарии</h2>
     {% for comment in video.comment_set.all %}
+    <p>Автор: {{ comment.user }} Создано: {{ comment.created_by }}</p>
+    <!-- <p>Обновлено: {{ comment.updated_by }}</p> -->
         <p>
             {{ comment.txt }}
         </p>

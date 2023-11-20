@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Video
+from .models import *
+from .forms import *
 
 
 def videos(request):
@@ -44,3 +45,26 @@ def video_delete(request, id):
     video_object = Video.objects.get(id=id)
     video_object.delete()
     return redirect(videos)
+
+def video_df_add(request):
+    context = {}
+    if request.method == "POST":
+        video_form = VideoForm(request.POST,request.FILES)
+        if video_form.is_valid():
+            video_object = video_form.save()
+            return redirect(video, id=video_object.id)
+
+    video_form = VideoForm()
+    context["video_form"] = video_form
+    return render(request, "video_df_add.html", context)
+
+# def comment_add(request):
+#     context = {}
+#     if request.method == 'POST':
+#         com_form = CommentForm(request.POST)
+#         if com_form.is_valid():
+#             com_obj = com_form.save()
+#             return redirect(video, id=com_obj.id)
+#         com_form = CommentForm()
+#         user = Comment.objects.all()
+#     return render(request, 'name.html', {'form': form, 'names': names})
