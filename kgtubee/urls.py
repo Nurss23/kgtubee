@@ -43,6 +43,10 @@ urlpatterns = [
     path('playlist-delete/<int:id>/', playlist_delete, name='playlist-delete'),
     path('playlist-df/add/', playlist_df_add, name='playlist-df-add'),
     path('video-df/add/', video_df_add, name='video-df-add'),
+    # path('profile_create_df/', profile_create_df),
+    path('profile_create_df/', profile_create_df, name='profile_create_df'),
+    # path('register/', profile_create_df, name='register'),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

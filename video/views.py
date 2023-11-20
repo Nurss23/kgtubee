@@ -14,7 +14,6 @@ def video(request, id):
     # 7
     # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
-    video_object = Video.objects.get(id=id)
     context = {}
 
     if request.method == 'POST':
@@ -79,17 +78,3 @@ def video_df_add(request):
     video_form = VideoForm()
     context["video_form"] = video_form
     return render(request, "video_df_add.html", context)
-
-# def comment_add(request):
-#     context = {}
-#     if request.method == "POST":
-#         com_form = CommentForm(request.POST)
-#         if com_form.is_valid():
-#             com_obj = com_form.save()
-#             return redirect(video, id=com_obj.id)
-        
-#     com_form = CommentForm()
-#     # user = Comment.objects.all()
-#     context["com_form"] = com_form
-#     return render(request, "video.html", context)
-#     # return render(request, 'video.html', {'form': form, 'names': names})
