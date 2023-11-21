@@ -16,6 +16,12 @@ def video(request, id):
     video_object = Video.objects.get(id=id)
     context = {}
 
+    if request.user.is_authenticated:
+        video_view, created = VideoView.objects.get_or_create(
+            user=request.user,
+            video=video_object,
+        )
+        
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
@@ -44,6 +50,7 @@ def video_add(request):
         video_object = Video(
             name=name,
             file_path=video_file,
+            author=request.user
         )
         # video_object.description = "hello world"
         # INSERT INTO ...

@@ -3,7 +3,22 @@
 
 {% block content %}
     <h1>{{ video.name }}</h1>
-    <h2>Лайков: {{ video.likes }}</h2>
+    {% if video.author %}
+        <h2>Автор:
+            <a href="{% url 'profile-detail' video.author.profile.id %}">
+                {{ video.author.username }}
+            </a>
+        </h2>
+    {% endif %}
+    <h3>Лайков: {{ video.likes }}</h2>
+    <h3>Просмотры: {{ video.videoview_set.count }}</h2>
+    <h3>Просмотрено пользователями:</h3>
+    {% for view in video.videoview_set.all %}
+        <div> 
+            {{ view.user.username }}
+        </div>
+    {% endfor %}
+    <hr>
     <p>
         <video width="500" controls src="{{ video.file_path.url }}">
         </video>
@@ -12,18 +27,20 @@
     <a href="{% url 'video-delete' video.id %}" class="btn btn-danger">Удалить</a>
     <hr>
     <h2>Комментарии</h2>
-    <p>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form comment_form %}
-            {% if comment_form.errors %}
-                <div class="alert alert-danger">
-                    {{ comment_form.errors }}
-                </div>
-            {% endif %}
-            <button type="submit" class="btn btn-primary">Добавить комментарий</button>
-        </form>
-    </p>
+    {% if request.user.is_authenticated %}
+        <p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form comment_form %}
+                {% if comment_form.errors %}
+                    <div class="alert alert-danger">
+                        {{ comment_form.errors }}
+                    </div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+            </form>
+        </p>
+    {% endif %}
     {% for comment in video.comment_set.all %}
         <div class="card mb-3">
             <div class="card-header">

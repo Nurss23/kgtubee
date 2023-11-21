@@ -15,6 +15,12 @@ class Video(models.Model):
         on_delete=models.SET_NULL,
         null=True, blank=True
     )
+    author = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=False
+    )
 
     def __str__(self):
         return self.name
@@ -34,3 +40,19 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.txt[:10]
+    
+class VideoView(models.Model):
+    video = models.ForeignKey(
+        to=Video,
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE
+    )
+    created_by = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Просмотр"
+        verbose_name_plural = "Просмотры"
+        unique_together = [["video", "user"]]
