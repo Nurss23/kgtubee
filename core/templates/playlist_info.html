@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
     <h1>{{ playlist_object.name }}</h1>
+    {% if playlist_object.owner %}
+        <h2>Владелец:
+            <a href="{% url 'profile-detail' playlist_object.owner.profile.id %}">
+                {{ playlist_object.owner.username }}
+            </a>
+        </h2>
+    {% endif %}
     <h2>Просмотры: {{ playlist_object.views_qty }}</h2>
     <h2>Количество видео: {{ playlist_object.videos_qty }}</h2>
     <a href="{% url 'playlist-update' playlist_object.id %}" class="btn btn-warning">Изменить</a>

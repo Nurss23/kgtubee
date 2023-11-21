@@ -5,7 +5,12 @@
     {% for object in objects_list %}
         <div class="col-lg-4 col-md-6 col-sm-12">
             <a href="{% url 'playlist-info' object.id %}">
-                {{ object.name }}
+                <h3>{{ object.name }}</h3>
+                {% if object.owner %}
+                    <a href="{% url 'profile-detail' object.owner.profile.id %}">
+                        {{ object.owner.username }} | Плейлист
+                    </a>
+                {% endif %}
             </a>
         </div>
     {% endfor %}

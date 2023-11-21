@@ -45,7 +45,6 @@ urlpatterns = [
     path('video-df/add/', video_df_add, name='video-df-add'),
     # path('profile_create_df/', profile_create_df),
     path('profile_create_df/', profile_create_df, name='profile_create_df'),
-    # path('register/', profile_create_df, name='register'),
     path('profile/<int:id>/', profile_detail, name='profile-detail'),
     path('profile-update/<int:id>/', profile_update, name='profile-update'),
     path('profile-delete/<int:id>/', profile_delete, name='profile-delete'),

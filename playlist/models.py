@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class UserPlayList(models.Model):
@@ -8,6 +9,12 @@ class UserPlayList(models.Model):
     videos_qty = models.IntegerField(default=0)
     views_qty = models.IntegerField(default=0)
     is_published = models.BooleanField(default=True)
+    owner = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=False
+    )
 
     def __str__(self):
         return self.name

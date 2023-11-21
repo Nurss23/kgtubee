@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import UserPlayList
-from .forms import PlayListForm
+from .models import *
+from .forms import *
 
 # Create your views here.
 def playlists(request):
@@ -16,9 +16,9 @@ def playlists(request):
         context
     )
 
-def playlist(request, id):
-    playlist_object = UserPlayList.objects.get(id=id)
-    return render(request, 'playlist.html', {"playlist": playlist_object})  
+# def playlist(request, id):
+#     playlist_object = UserPlayList.objects.get(id=id)
+#     return render(request, 'playlist.html', {"playlist": playlist_object})  
 
 def playlist_add(request):
     if request.method == "POST":
@@ -28,10 +28,13 @@ def playlist_add(request):
         # print(request.POST)
         # print(name)
         # INSERT INTO UserPlayList ...
-        playlist_object = UserPlayList.objects.create(
+        # playlist_object = UserPlayList.objects.create(
+        playlist_object = UserPlayList(
             name=name,
             description=description,
+            owner=request.user
         )
+        playlist_object.save()
         return redirect(playlist_info, id=playlist_object.id)
     
     return render(request, "playlist_add.html")

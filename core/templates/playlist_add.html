@@ -3,20 +3,28 @@
 {% block content %}
     <form method="POST">
         {% csrf_token %}
-        <form action="/action_page.php">
+        <p>
+            <input class="form-control" type="text" name="playlist_name" required maxlength="60">
+        </p>
+        <p>
+            <input class="form-control" type="text" name="description" required maxlength="60">
+        </p>
+        <button class="btn btn-primary">Создать</button>
+    </form>
+{% endblock %}
+        <!-- <form action="/action_page.php">
             <div class="mb-3 mt-3">
                 <label for="comment">Название:</label>
                 <p>
                     <textarea class="form-control" rows="1" name="playlist_name"></textarea>
-                    <!-- <input class="form-control" type="text" name="playlist_name"> -->
+                    <input class="form-control" type="text" name="playlist_name">
                 </p>
                 <label for="comment">Описание:</label>
                 <p>
                     <textarea class="form-control" rows="5" name="description"></textarea>
                 </p>
-                <!-- <p>
+                <p>
                     <input class="form-control" type="text" name="description_pl">
-                </p> -->
+                </p>
         <button class="btn btn-primary">Загрузить</button>
-    </form>
-{% endblock %}
+    </form> -->
