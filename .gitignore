@@ -2,3 +2,5 @@ media/
 db.sqlite3
 __pycache__/
 *.pyc
+static/
+!like.svg

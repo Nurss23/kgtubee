@@ -21,7 +21,6 @@ class Video(models.Model):
         null=True,
         blank=False
     )
-
     def __str__(self):
         return self.name
 
