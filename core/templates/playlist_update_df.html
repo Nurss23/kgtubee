@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <h2>Обновить плейлист</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form playlist_form %}
+        <button>Сохранить</button>
+    </form>
+
+{% endblock %}

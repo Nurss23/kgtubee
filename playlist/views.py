@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from .forms import *
+from django.contrib import messages
 
 # Create your views here.
 def playlists(request):
@@ -61,20 +62,51 @@ def playlist_df_add(request):
     context["playlist_form"] = playlist_form
     return render(request, "playlist_df_add.html", context)
 
-def playlist_update(request, id):
-    playlist_object = UserPlayList.objects.get(id=id)
-    context = {"playlist": playlist_object}
+# def playlist_update(request, id):
+#     playlist_object = UserPlayList.objects.get(id=id)
+#     context = {"playlist": playlist_object}
 
-    if request.method == "POST":
-        name = request.POST["playlist_name"]
-        # description = request.POST["description"] # str
-        playlist_object.name = name
-        playlist_object.save()
-        return redirect(playlist_info, id=playlist_object.id)
+#     if request.method == "POST":
+#         name = request.POST["playlist_name"]
+#         # description = request.POST["description"] # str
+#         playlist_object.name = name
+#         playlist_object.save()
+#         return redirect(playlist_info, id=playlist_object.id)
  
-    return render(request, "playlist_update.html", context)
+#     return render(request, "playlist_update.html", context)
+
+def playlist_update_df(request, id):
+    context = {}
+    playlist_object = UserPlayList.objects.get(id=id)
+    if request.user == playlist_object.owner:
+        if request.method == "POST":
+            playlist_form = PlayListForm(
+                instance=playlist_object,
+                data=request.POST
+            )
+            if playlist_form.is_valid():
+                playlist_form.save()
+                messages.success(request, "Плейлист успешно обновлён!")
+                return redirect(playlist_info, id=playlist_object.id)
+            
+        playlist_form = PlayListForm(instance=playlist_object)
+        context["playlist_form"] = playlist_form
+        return render(request, "playlist_update_df.html", context)
+    else:
+        return HttpResponse("Нет доступа")
 
 def playlist_delete(request, id):
     playlist_object = UserPlayList.objects.get(id=id)
-    playlist_object.delete()
-    return redirect(playlists)
+    if request.user == playlist_object.owner:
+        context = {"playlist_object": playlist_object}
+        if request.method == "POST":
+            playlist_object.delete()
+            return redirect(playlists)
+        return render(request, "playlist_delete.html", context)
+    else:
+        return HttpResponse("Нет доступа")
+    
+# def playlist_delete(request, id):
+#     playlist_object = UserPlayList.objects.get(id=id)
+#     playlist_object.delete()
+#     return redirect(playlists)

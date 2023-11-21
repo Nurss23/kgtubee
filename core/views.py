@@ -35,6 +35,7 @@ def profile_create_df(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
+            messages.success(request, "Профиль успешно создан!")
             return redirect(homepage)
 
     profile_form = ProfileForm()
