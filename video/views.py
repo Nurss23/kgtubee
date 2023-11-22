@@ -15,7 +15,12 @@ def video(request, id):
     # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
     context = {}
-
+    if request.method == 'POST':
+        video_object.user = request.user
+        video_object.likes += 1
+        video_object.save()
+        return redirect(video, id=video_object.id)
+    
     if request.user.is_authenticated:
         video_view, created = VideoView.objects.get_or_create(
             user=request.user,
@@ -36,7 +41,7 @@ def video(request, id):
 
     context = {
         "video": video_object,
-        "comment_form": CommentForm()
+        "comment_form": CommentForm(),
 
     }
     return render(request, 'video.html', context)
