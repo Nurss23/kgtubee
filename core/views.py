@@ -83,6 +83,39 @@ def profile_detail(request, id):
         {"profile_object": profile_object}
     )
 # def profile_detail(request, id):
+#     profile_object = Profile.objects.get(id=id)
+#     context = {}
+#     if request.method == 'POST':
+#         # profile_object.user = request.user
+#         # profile_object.subscribers.count()
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)
+#     context = {
+#         "profile_object": profile_object
+#     }
+#     return render(
+#         request,
+#         'profile_detail.html',
+#         context
+#     )
+
+# def profile_detail(request, id):
+#     profile_object = Profile.objects.get(id=id)
+#     context = {}
+#     if request.method == 'POST':
+#         profile_object.subscribers.add(request.user)
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)
+#     context = {
+#         "profile_object": profile_object
+#     }
+#     return render(
+#         request,
+#         'profile_detail.html',
+#         context
+#     )
+
+# def profile_detail(request, id):
 #     context = {}
 #     profile_object = Profile.objects.get(id=id)
 #     context["profile_object"] = profile_object
@@ -134,3 +167,19 @@ def profile_delete(request, id):
         return render(request, "profile_delete.html", context)
     else:
         return HttpResponse("Нет доступа")
+    
+def subscriber_add(request,id):
+    profile_object = Profile.objects.get(id=id)
+    context = {}
+    if request.method == 'GET':
+        profile_object.subscribers.add(request.user)
+        profile_object.save()
+        return redirect(profile_detail, id=profile_object.id)
+    context = {
+        "profile_object": profile_object
+    }
+    return render(
+        request,
+        'profile.html',
+        context
+    )

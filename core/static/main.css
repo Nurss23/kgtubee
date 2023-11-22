@@ -14,3 +14,18 @@ a, a:hover {
     color: #333;
     text-decoration: none;
 }
+
+.button {
+    background-color: #aa0404; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+.button1 {border-radius: 8px;}

@@ -12,7 +12,14 @@
         <a class="btn btn-warning" href="{% url 'profile-update' profile_object.id %}">Изменить</a>
         <a class="btn btn-danger" href="{% url 'profile-delete' profile_object.id %}">Удалить</a>
     {% endif %}
-
+    <div>
+        {% if request.user != profile_object.user %}
+                <form method="GET">
+                    {% csrf_token %}
+                    <a class="btn btn-danger" href="{% url 'subscriber-add' profile_object.id %}">Подписаться</a>
+                </form>
+        {% endif %}
+    </div>
     <h3>Видео этого канала:</h3>
     <div class="row">
         {% for video in profile_object.user.video_set.all %}

@@ -16,7 +16,7 @@ def video(request, id):
     video_object = Video.objects.get(id=id)
     context = {}
     if request.method == 'POST':
-        video_object.user = request.user
+        # video_object.author = request.user
         video_object.likes += 1
         video_object.save()
         return redirect(video, id=video_object.id)
