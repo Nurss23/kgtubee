@@ -34,23 +34,6 @@ def search(request):
     context = {"videos_list": videos_query}
     return render(request, "videos.html", context)
 
-# def profile_create_df(request):
-#     context = {}
-
-#     if request.method == "POST":
-#         profile_form = ProfileForm(request.POST, request.FILES)
-#         if profile_form.is_valid():
-#             user = request.user
-#             profile = profile_form.save(commit=False)
-#             profile.user = user
-#             profile.save()
-#             messages.success(request, "Профиль успешно создан!")
-#             return redirect(homepage)
-
-#     profile_form = ProfileForm()
-#     context["profile_form"] = profile_form
-#     return render(request, "profile_create_df.html", context)
-
 def profile_create(request):
     context = {}
     if request.method == "POST":
@@ -77,49 +60,21 @@ def profile_create(request):
 
 def profile_detail(request, id):
     profile_object = Profile.objects.get(id=id)
+    if request.method == "POST":
+        if "subs" in request.POST:
+            profile_object.subscribers.add(request.user)
+            profile_object.save()
+            # return redirect(profile_detail, id=profile_object.id)
+        elif "subs_r" in request.POST:
+            profile_object.subscribers.remove(request.user)
+            profile_object.save()
+            # return redirect(profile_detail, id=profile_object.id)
+
     return render(
         request,
         'profile.html',
         {"profile_object": profile_object}
     )
-# def profile_detail(request, id):
-#     profile_object = Profile.objects.get(id=id)
-#     context = {}
-#     if request.method == 'POST':
-#         # profile_object.user = request.user
-#         # profile_object.subscribers.count()
-#         profile_object.save()
-#         return redirect(profile_detail, id=profile_object.id)
-#     context = {
-#         "profile_object": profile_object
-#     }
-#     return render(
-#         request,
-#         'profile_detail.html',
-#         context
-#     )
-
-# def profile_detail(request, id):
-#     profile_object = Profile.objects.get(id=id)
-#     context = {}
-#     if request.method == 'POST':
-#         profile_object.subscribers.add(request.user)
-#         profile_object.save()
-#         return redirect(profile_detail, id=profile_object.id)
-#     context = {
-#         "profile_object": profile_object
-#     }
-#     return render(
-#         request,
-#         'profile_detail.html',
-#         context
-#     )
-
-# def profile_detail(request, id):
-#     context = {}
-#     profile_object = Profile.objects.get(id=id)
-#     context["profile_object"] = profile_object
-
 #     # subscribers_qty = profile_object.subscribers.count()
 #     subscribers_qty = User.objects.filter(subscriptions=profile_object).count()
 #     context["subscribers_qty"] = subscribers_qty
@@ -128,13 +83,6 @@ def profile_detail(request, id):
 #     videos_list = profile_object.user.video_set.all()
 #     # videos_list = Video.objects.filter(author=profile_object.user)
 #     context["videos_list"] = videos_list 
-
-
-#     return render(
-#         request,
-#         'profile.html',
-#         context
-#     )
 
 def profile_update(request, id):
     context = {}
@@ -168,18 +116,16 @@ def profile_delete(request, id):
     else:
         return HttpResponse("Нет доступа")
     
-def subscriber_add(request,id):
-    profile_object = Profile.objects.get(id=id)
-    context = {}
-    if request.method == 'GET':
-        profile_object.subscribers.add(request.user)
-        profile_object.save()
-        return redirect(profile_detail, id=profile_object.id)
-    context = {
-        "profile_object": profile_object
-    }
-    return render(
-        request,
-        'profile.html',
-        context
-    )
+# def subscriber_add(request,id):
+#     if request.method == "POST":
+#         profile_object = Profile.objects.get(id=id)
+#         profile_object.subscribers.add(request.user)
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)
+
+# def subscriber_remove(request,id):
+#     if request.method == "POST":
+#         profile_object = Profile.objects.get(id=id)
+#         profile_object.subscribers.remove(request.user)
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)

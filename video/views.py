@@ -15,29 +15,35 @@ def video(request, id):
     # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
     context = {}
-    if request.method == 'POST':
-        # video_object.author = request.user
-        video_object.likes += 1
-        video_object.save()
-        return redirect(video, id=video_object.id)
-    
     if request.user.is_authenticated:
         video_view, created = VideoView.objects.get_or_create(
             user=request.user,
             video=video_object,
         )
-        
-    if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False) # ещё нет записи в БД
-            comment.user = request.user
-            comment.video = video_object
-            comment.save() # сохраняем в БД
-            messages.success(request, 'Комментарий успешно добавлен.')
-            return redirect(video, id=video_object.id)
-        else:
-            messages.error(request, 'Ошибка! Данные не валидны')
+        if request.method == 'POST':
+            if "txt" in request.POST:
+                comment_form = CommentForm(request.POST)
+                if comment_form.is_valid():
+                    comment = comment_form.save(commit=False) # ещё нет записи в БД
+                    comment.user = request.user
+                    comment.video = video_object
+                    comment.save() # сохраняем в БД
+                    messages.success(request, 'Комментарий успешно добавлен.')
+                    return redirect(video, id=video_object.id)
+                else:
+                    messages.error(request, 'Ошибка! Данные не валидны')
+            elif "like" in request.POST:
+                video_object.likes += 1
+                video_object.save()
+                return redirect(video, id=video_object.id)
+            elif "dislike" in request.POST:
+                video_object.dislike.add(request.user)
+                video_object.save()
+            elif "dislike_r" in request.POST:
+                video_object.dislike.remove(request.user)
+                video_object.save()
+            else:
+                messages.error(request, 'Ошибка! Данные не валидны')
 
     context = {
         "video": video_object,

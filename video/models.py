@@ -21,6 +21,12 @@ class Video(models.Model):
         null=True,
         blank=False
     )
+    dislike = models.ManyToManyField(
+        to=User,
+        related_name="dislikes",
+        verbose_name="Дизлайки",
+        blank=True
+    )
     def __str__(self):
         return self.name
 

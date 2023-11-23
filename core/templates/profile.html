@@ -13,11 +13,16 @@
         <a class="btn btn-danger" href="{% url 'profile-delete' profile_object.id %}">Удалить</a>
     {% endif %}
     <div>
-        {% if request.user != profile_object.user %}
-                <form method="GET">
-                    {% csrf_token %}
-                    <a class="btn btn-danger" href="{% url 'subscriber-add' profile_object.id %}">Подписаться</a>
-                </form>
+        {% if request.user in profile_object.subscribers.all %}
+            <form method="POST">
+                {% csrf_token %}
+                <button name="subs_r" class="btn btn-danger">Отписаться</button>
+            </form>
+            {% else %}
+            <form method="POST">
+                {% csrf_token %}
+                <button name="subs" class="btn btn-info">Подписаться</button>
+            </form>
         {% endif %}
     </div>
     <h3>Видео этого канала:</h3>

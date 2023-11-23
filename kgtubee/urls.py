@@ -49,7 +49,8 @@ urlpatterns = [
     path('profile-detail/<int:id>/', profile_detail, name='profile-detail'),
     path('profile-update/<int:id>/', profile_update, name='profile-update'),
     path('profile-delete/<int:id>/', profile_delete, name='profile-delete'),
-    path('subscriber-add/<int:id>/', subscriber_add, name='subscriber-add'),
+    # path('subscriber-add/<int:id>/', subscriber_add, name='subscriber-add'),
+    # path('subscriber-remove/<int:id>/', subscriber_remove, name='subscriber-remove'),
 
 ]
 

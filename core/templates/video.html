@@ -7,7 +7,7 @@
     {% if video.author %}
         <h2>Автор:
             <a href="{% url 'profile-detail' video.author.profile.id %}">
-                {{ video.author.username }}
+                {{ video.author.username }} 
             </a>
         </h2>
     {% endif %}
@@ -24,15 +24,45 @@
         <video width="500" controls src="{{ video.file_path.url }}">
         </video>
     </p>
-    <a href="{% url 'video-update' video.id %}" class="btn btn-warning">Изменить</a>
-    <a href="{% url 'video-delete' video.id %}" class="btn btn-danger">Удалить</a>
-    <br><br>
-    <div>
-        <form method="POST">
-            {% csrf_token %}
-            <button span><img height="20px" src="{% static 'like.svg' %}" alt=""> {{ video.likes }}</span></a>
-        </form>
-    </div>
+    {% if request.user == video.author %}
+        <a href="{% url 'video-update' video.id %}" class="btn btn-warning">Изменить</a>
+        <a href="{% url 'video-delete' video.id %}" class="btn btn-danger">Удалить</a>
+    {% endif %}
+    
+    {% if request.user.is_authenticated %}
+        <div class="likes-block">
+            <form method="POST">
+                {% csrf_token %}
+                <button name="like">
+                    <span>
+                        <img height="20px" src="{% static 'like.svg' %}" alt="">
+                        {{ video.likes }}
+                    </span>
+                </button>
+            </form>
+            {% if request.user in video.dislike.all %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button name="dislike_r">
+                        <span>
+                            <img height="20px" src="{% static 'dislike.svg' %}" alt="">
+                            {{ video.dislike.count }}
+                        </span>
+                    </button>
+                </form>
+                {% else %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button name="dislike">
+                        <span>
+                            <img height="20px" src="{% static 'dislike.svg' %}" alt="">
+                            {{ video.dislike.count }}
+                        </span>
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
     <hr>
     <h2>Комментарии</h2>
     {% if request.user.is_authenticated %}
