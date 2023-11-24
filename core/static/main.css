@@ -14,7 +14,7 @@ a, a:hover {
     color: #333;
     text-decoration: none;
 }
-/* 
+
 .likes-block {
     margin-top: 5px;
     display: flex;
@@ -24,26 +24,15 @@ a, a:hover {
 .likes-block button {
     border: none;
     background-color: white;
-} */
-
-.likes-block {
-    &:checked + #like-button{
-        span{color:#008cc9; animation:textAnim .6s forwards; transition:color 0s .3s;}
-        svg{
-          animation:svgAnim .6s forwards;
-          path{animation:thumbAnim .6s forwards;}
-          #Oval{animation:circleAnim .3s .3s forwards;}
-        }
-      }
-    margin-top: 5px;
-    display: flex;
-    gap: 3px;
 }
 
-.likes-block button {
-    border: none;
-    background-color: white;
+.dis {
+  fill: #5d0000;
+  /* fill-rule: nonzero; */
+  /* stroke: #000000; */
+  /* stroke-width: 10%; */
 }
+
 /* #checkbox{
     display:none;
     &:checked + #like-button{
