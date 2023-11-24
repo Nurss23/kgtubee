@@ -45,36 +45,42 @@
             <li class="nav-item">
               <a class="nav-link" href="/contacts/">Контакты</a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="/profile_create_df/">Создать профиль (df)</a>
-            </li> -->
             {% if request.user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Добавить</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'profile-create' %}">Добавить профиль</a></li>
-                  <li><a class="dropdown-item" href="{% url 'playlist-add' %}">Добавить плейлист</a></li>
-                  <li><a class="dropdown-item" href="{% url 'video-add' %}">Добавить видео</a></li>
-                  <li><a class="dropdown-item" href="{% url 'playlist-df-add' %}">Добавить плейлист (df)</a></li>
-                  <li><a class="dropdown-item" href="{% url 'video-df-add' %}">Добавить видео (df)</a></li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="/sign-out/">Выйти</a>
+              </li>
               {% if request.user.profile %}
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'profile-detail' request.user.profile.id %}">Мой профиль</a>
-                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Добавить</a>
+                  <ul class="dropdown-menu">
+                    <!-- <li><a class="dropdown-item" href="{% url 'profile-create' %}">Добавить профиль</a></li> -->
+                    <li><a class="dropdown-item" href="{% url 'playlist-add' %}">Добавить плейлист</a></li>
+                    <li><a class="dropdown-item" href="{% url 'video-add' %}">Добавить видео</a></li>
+                    <li><a class="dropdown-item" href="{% url 'playlist-df-add' %}">Добавить плейлист (df)</a></li>
+                    <li><a class="dropdown-item" href="{% url 'video-df-add' %}">Добавить видео (df)</a></li>
+                  </ul>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile-detail' request.user.profile.id %}">Мой профиль</a>
+                  </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/profile-create/">Создать канал</a>
+              </li>
               {% endif %}
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/registration/">Регистрация</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sign-in/">Авторизоваться</a>
+            </li>
             {% endif %}
           </ul>
           <form class="d-flex mx-1" action="/search/">
             <input class="form-control me-2" type="text" name="key_word" placeholder="Введите">
             <button class="btn btn-dark">Поиск</button>
           </form>
-          <!-- <form class="d-flex" action="/search/">
-            <input class="form-control me-2" type="text" name="key_word" placeholder="Введите">
-            <button class="btn btn-dark">Поиск</button>
-          <div> -->
-            <img src="{{ request.user.profile.photo.url }}" height="50px" alt="">
-          </div>
+          <img src="{{ request.user.profile.photo.url }}" height="50px" alt="">
         </div>
       </div>
     </nav>

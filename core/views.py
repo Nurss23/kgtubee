@@ -1,10 +1,11 @@
 from django.shortcuts import render, HttpResponse, redirect
 from video.models import Video
 from .models import Profile
-from .forms import ProfileForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
 def homepage(request):
@@ -46,7 +47,7 @@ def profile_create(request):
             profile_object.user = request.user
             profile_object.save()
             messages.success(request, "Профиль и канал успешно созданы")
-            return redirect(f'/profile/{profile_object.id}/')
+            return redirect(f'/profile-detail/{profile_object.id}/')
         else:
             messages.error(request, "Ошибка при создании профиля")
 
@@ -129,3 +130,46 @@ def profile_delete(request, id):
 #         profile_object.subscribers.remove(request.user)
 #         profile_object.save()
 #         return redirect(profile_detail, id=profile_object.id)
+
+def registration(request):
+    context = {}
+    if request.method == "POST":
+        registration_form = UserCreateForm(request.POST)
+        if registration_form.is_valid():
+            new_user = registration_form.save(commit=False)
+            new_user.set_password(request.POST["password"])
+            new_user.save()
+            messages.success(request, "Вы успешно прошли регитсрацию")
+            return redirect(sign_in)
+    context["registration_form"] = UserCreateForm()
+    return render(request, "user/registration.html", context)
+
+def sign_in(request):
+    if request.method == "POST":
+        auth_form = UserAuthForm(request.POST)
+        if auth_form.is_valid():
+            # индентификация
+            user_object = authenticate(
+                username=request.POST["username"],
+                password=request.POST.get("password")
+            )
+            # авторизация
+            if user_object:
+                login(request, user_object)
+                messages.success(request, "Успешно авторизовано!")
+                return redirect(homepage)
+            else:
+                messages.error(request, "Неверный логин или пароль")
+        else:
+            # print(auth_form.errors)
+            messages.error(request, auth_form.errors)  
+
+    return render(
+        request,
+        "user/sign_in.html",
+        {"auth_form": UserAuthForm()}
+    )
+
+def sign_out(request):
+    logout(request)
+    return redirect(homepage)
