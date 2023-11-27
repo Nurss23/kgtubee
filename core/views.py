@@ -8,9 +8,14 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
+# def homepage(request):
+#     # return  HttpResponse("hello world")
+#     return render(request, "home.html")
+
 def homepage(request):
-    # return  HttpResponse("hello world")
-    return render(request, "home.html")
+    videos_list = Video.objects.all()
+    context = {"videos_list": videos_list}
+    return render(request, "home.html",context)
 
 def about_view(request):
     return render(request, 'about.html')
