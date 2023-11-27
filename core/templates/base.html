@@ -86,14 +86,18 @@
             <button class="btn btn-dark">Поиск</button>
           </form>
           {% if request.user.profile %}
-          <div>
-            <img src="{{ request.user.profile.photo.url }}" height="50px" alt="">
-            <a href="{% url 'profile-detail' request.user.profile.id %}"><br>
-              {{ request.user.profile.user }}
-            </a>
-          </div>
-        {% endif %}
-          <!-- <img src="{{ request.user.profile.photo.url }}" height="50px" alt=""> -->
+            <div>
+              <img src="{{ request.user.profile.photo.url }}" height="40px" alt="">
+              <br>
+              <a
+                {% if request.user.profile %}
+                  href="{% url 'profile-detail' request.user.profile.id %}"
+                {% endif %}
+                class="text-white">
+                {{ request.user.username }}
+              </a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </nav>

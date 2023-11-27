@@ -11,6 +11,7 @@ class ShortsForm(forms.ModelForm):
     class Meta:
         model = Shorts
         fields = ['name', 'file_path','description']
+        exclude = ('author',)
 
 class ShCommentForm(forms.ModelForm):
     class Meta:

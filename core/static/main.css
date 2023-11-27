@@ -26,55 +26,12 @@ a, a:hover {
     background-color: white;
 }
 
-.dis {
-  fill: #5d0000;
-  /* fill-rule: nonzero; */
-  /* stroke: #000000; */
-  /* stroke-width: 10%; */
+.carousel-control-prev,
+.carousel-control-next{
+    align-items: flex-start;; /* Aligns it at the top */
 }
 
-/* #checkbox{
-    display:none;
-    &:checked + #like-button{
-      span{color:#008cc9; animation:textAnim .6s forwards; transition:color 0s .3s;}
-      svg{
-        animation:svgAnim .6s forwards;
-        path{animation:thumbAnim .6s forwards;}
-        #Oval{animation:circleAnim .3s .3s forwards;}
-      }
-    }
-  }
-  
-  #like-button{
-    display:inline-block; cursor:pointer; padding: 5px 10px; border: 1px solid #eee;
-    svg{
-      float:left; transform-origin:bottom right; overflow:visible;
-      circle{transform-origin:center;}
-    }
-    span{float:left; margin:5px 0 0 7px; color:#979797; transform-origin:center;}
-    
-  }
-  
-  @keyframes svgAnim{
-    50%{transform:translate(5px, -5px) rotate(45deg) scale(.7);}
-  }
-  
-  @keyframes thumbAnim{
-    49%{stroke-width:3; fill:transparent;}
-    50%{stroke-width:0; fill:#008cc9;}
-    100%{stroke-width:0; fill:#008cc9;}
-  }
-  
-  @keyframes textAnim{
-    50%{transform:scale(.7);}
-  }
-  
-  @keyframes circleAnim{
-    40%{transform:scale(20); opacity:1; fill:#008cc9;}
-    55%{transform:scale(21); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:.7;}
-    65%{transform:scale(22); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:.6;}
-    75%{transform:scale(23); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:.5;}
-    85%{transform:scale(27); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:.2;}
-    95%{transform:scale(28); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:.1;}
-    100%{transform:scale(29); opacity:1; fill:transparent; stroke:#008cc9; stroke-width:0;}
-  } */
+.carousel-control-prev,
+.carousel-control-next{
+    align-items: flex-end;; /* Aligns it at the bottom */
+}

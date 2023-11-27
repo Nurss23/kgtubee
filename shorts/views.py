@@ -5,7 +5,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-def shorts_list(request):
+def all_shorts(request):
     shorts_list = Shorts.objects.all()
     context = {"shorts_list": shorts_list}
     return render(request, 'shorts/shorts_list.html', context)
@@ -14,7 +14,7 @@ def shorts(request, id):
     shorts_object = Shorts.objects.get(id=id)
     context = {}
     if request.user.is_authenticated:
-        shorts_view, created = ShView.objects.get_or_create(
+        shorts_view, created = ShortsView.objects.get_or_create(
             user=request.user,
             shorts=shorts_object,
         )
@@ -25,7 +25,7 @@ def shorts(request, id):
                     comment = comment_form.save(commit=False)
                     comment.user = request.user
                     comment.shorts = shorts_object
-                    comment.save() # сохраняем в БД
+                    comment.save()
                     messages.success(request, 'Комментарий успешно добавлен.')
                     return redirect(shorts, id=shorts_object.id)
                 else:
@@ -58,8 +58,11 @@ def shorts_create(request):
     if request.method == "POST":
         shorts_form = ShortsForm(request.POST,request.FILES)
         if shorts_form.is_valid():
-            shorts_object = shorts_form.save()
-            return redirect(shorts, id=shorts_object.id)
+            shorts_object = shorts_form.save(commit=False)
+            shorts_object.author = request.user
+            shorts_object.save()
+            # return redirect(shorts, id=shorts_object.id)
+            return redirect(all_shorts)
 
     shorts_form = ShortsForm()
     context["shorts_form"] = shorts_form
@@ -68,7 +71,7 @@ def shorts_create(request):
 def shorts_update(request, id):
     context = {}
     shorts_object = Shorts.objects.get(id=id)
-    if request.user == shorts_object.owner:
+    if request.user == shorts_object.author:
         if request.method == "POST":
             shorts_form = ShortsForm(
                 instance=shorts_object,
@@ -87,11 +90,11 @@ def shorts_update(request, id):
 
 def shorts_delete(request, id):
     shorts_object = Shorts.objects.get(id=id)
-    if request.user == shorts_object.owner:
+    if request.user == shorts_object.author:
         context = {"shorts_object": shorts_object}
         if request.method == "POST":
             shorts_object.delete()
-            return redirect(shorts_list)
+            return redirect(all_shorts)
         return render(request, "shorts/shorts_delete.html", context)
     else:
         return HttpResponse("Нет доступа")

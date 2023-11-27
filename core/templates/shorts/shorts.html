@@ -6,20 +6,20 @@
     <h1>{{ shorts.name }}</h1>
     {% if shorts.author %}
         <h2>Автор:
-            <a href="{% url 'shorts' shorts.author.profile.id %}">
+            <a href="{% url 'profile-detail' shorts.author.profile.id %}">
                 {{ shorts.author.username }} 
             </a>
         </h2>
     {% endif %}
-    <!-- <h3>Лайков: {{ shorts.likes.count }}</h2> -->
-    <h3>Просмотры: {{shorts.shortsview_set.count }}</h2>
+    <h3>Лайков: {{ shorts.likes }}</h2>
+    <h3>Просмотры: {{ shorts.shortsview_set.count }}</h2>
+    <h3>Просмотрено пользователями:</h3>
     {% if request.user == shorts.author %}
-        <h3>Просмотрено пользователями:</h3>
         {% for view in shorts.shortsview_set.all %}
-        <div> 
-            {{ view.user.username }}
-        </div>
-            {% endfor %}
+            <div> 
+                {{ view.user.username }}
+            </div>
+        {% endfor %}
     {% endif %}
     <hr>
     <p>

@@ -10,7 +10,7 @@
                         <source src="{{ shorts.file_path.url }}">
                     </video>
                     <h3>{{ shorts.name }}</h3>
-                    <span><img height="20px" src="{% static 'like.svg' %}" alt=""> {{ shorts.likes }}</span> 
+                    <span><img height="20px" src="{% static 'like.svg' %}" alt=""> {{ shorts.likes.count }}</span> 
                     <span>
                     {% if shorts.author and shorts.author.profile %}
                         <a href="{% url 'profile-detail' shorts.author.profile.id %}">

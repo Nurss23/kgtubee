@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from playlist.models import UserPlayList
-from core.models import Profile
+# from core.models import Profile
 from django.core.validators import FileExtensionValidator 
 # Create your models here.
 
 class Category(models.Model):
-    name = models.CharField(max_length=65, db_index=True,blank=True,null=True)
+    name = models.CharField(max_length=65, db_index=True)
     description = models.TextField(db_index=True,blank=True,null=True)
 
     class Meta:
@@ -27,9 +27,7 @@ class Shorts(models.Model):
     is_published = models.BooleanField(default=True)
     author = models.ForeignKey(
         to=User,
-        on_delete=models.CASCADE,
-        # null=False,
-        # blank=True
+        on_delete=models.CASCADE
     )
     playlist = models.ForeignKey(
         to=UserPlayList,
@@ -76,7 +74,7 @@ class ShComment(models.Model):
     def __str__(self):
         return self.txt[:30]
     
-class ShView(models.Model):
+class ShortsView(models.Model):
     shorts = models.ForeignKey(
         to=Shorts,
         on_delete=models.CASCADE,
@@ -85,8 +83,7 @@ class ShView(models.Model):
         to=User,
         on_delete=models.CASCADE
     )
-    start_view = models.TimeField(auto_now_add=True,blank=True, null=True)
-    end_view  = models.TimeField(auto_now=True,blank=True, null=True)
+    created_by = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Просмотр"
