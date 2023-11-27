@@ -19,6 +19,7 @@ from django.urls import path
 from core.views import *
 from playlist.views import *
 from video.views import *
+from shorts.views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -51,6 +52,10 @@ urlpatterns = [
     path("registration/", registration, name="registration"),
     path('sign-in/', sign_in, name="sign-in"),
     path('sign-out/', sign_out, name="sign-out"),
+    path('shorts-create/', shorts_create, name='shorts-create'),
+    path('shorts-detail/<int:id>/', shorts, name='shorts-detail'),
+    path('shorts-update/<int:id>/', shorts_update, name='shorts-update'),
+    path('shorts-delete/<int:id>/', shorts_delete, name='shorts-delete'),
 
 ]
 

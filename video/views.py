@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-from .forms import CommentForm
 from django.contrib import messages
 
 
@@ -89,6 +88,9 @@ def video_df_add(request):
     context = {}
     if request.method == "POST":
         video_form = VideoForm(request.POST,request.FILES)
+        # video_author = Video(
+        #     author=request.user
+        # )
         if video_form.is_valid():
             video_object = video_form.save()
             return redirect(video, id=video_object.id)

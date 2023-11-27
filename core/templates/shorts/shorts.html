@@ -3,50 +3,64 @@
 {% load static %}
 
 {% block content %}
-    <h1>{{ video.name }}</h1>
-    {% if video.author %}
+    <h1>{{ shorts.name }}</h1>
+    {% if shorts.author %}
         <h2>Автор:
-            <a href="{% url 'profile-detail' video.author.profile.id %}">
-                {{ video.author.username }} 
+            <a href="{% url 'shorts' shorts.author.profile.id %}">
+                {{ shorts.author.username }} 
             </a>
         </h2>
     {% endif %}
-    <h3>Лайков: {{ video.likes }}</h2>
-    <h3>Просмотры: {{ video.videoview_set.count }}</h2>
-    <h3>Просмотрено пользователями:</h3>
-    {% for view in video.videoview_set.all %}
+    <!-- <h3>Лайков: {{ shorts.likes.count }}</h2> -->
+    <h3>Просмотры: {{shorts.shortsview_set.count }}</h2>
+    {% if request.user == shorts.author %}
+        <h3>Просмотрено пользователями:</h3>
+        {% for view in shorts.shortsview_set.all %}
         <div> 
             {{ view.user.username }}
         </div>
-    {% endfor %}
+            {% endfor %}
+    {% endif %}
     <hr>
     <p>
-        <video width="500" controls src="{{ video.file_path.url }}">
+        <video width="500" controls src="{{ shorts.file_path.url }}">
         </video>
     </p>
-    {% if request.user == video.author %}
-        <a href="{% url 'video-update' video.id %}" class="btn btn-warning">Изменить</a>
-        <a href="{% url 'video-delete' video.id %}" class="btn btn-danger">Удалить</a>
+    {% if request.user == shorts.author %}
+        <a href="{% url 'shorts-update' shorts.id %}" class="btn btn-warning">Изменить</a>
+        <a href="{% url 'shorts-delete' shorts.id %}" class="btn btn-danger">Удалить</a>
     {% endif %}
     
     {% if request.user.is_authenticated %}
         <div class="likes-block">
+            {% if request.user in shorts.like.all %}
+            <form method="POST">
+                {% csrf_token %}
+                <button name="like_r">
+                    <span>
+                        <img height="20px" src="{% static 'like.svg' %}" alt="">
+                        {{ shorts.like.count }}
+                    </span>
+                </button>
+            </form>
+            {% else %}
             <form method="POST">
                 {% csrf_token %}
                 <button name="like">
                     <span>
                         <img height="20px" src="{% static 'like.svg' %}" alt="">
-                        {{ video.likes }}
+                        {{ shorts.like.count }}
                     </span>
                 </button>
             </form>
-            {% if request.user in video.dislike.all %}
+            {% endif %}
+            {% if request.user in shorts.dislike.all %}
                 <form method="POST">
                     {% csrf_token %}
                     <button name="dislike_r">
                         <span>
                             <img height="20px" src="{% static 'dislike.svg' %}" alt="">
-                            {{ video.dislike.count }}
+                            {{ shorts.dislike.count }}
                         </span>
                     </button>
                 </form>
@@ -56,7 +70,7 @@
                     <button name="dislike">
                         <span>
                             <img height="20px" src="{% static 'dislike.svg' %}" alt="">
-                            {{ video.dislike.count }}
+                            {{ shorts.dislike.count }}
                         </span>
                     </button>
                 </form>
@@ -69,17 +83,17 @@
         <p>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% bootstrap_form comment_form %}
-                {% if comment_form.errors %}
+                {% bootstrap_form shcomment_form %}
+                {% if shcomment_form.errors %}
                     <div class="alert alert-danger">
-                        {{ comment_form.errors }}
+                        {{ shcomment_form.errors }}
                     </div>
                 {% endif %}
                 <button type="submit" class="btn btn-primary">Добавить комментарий</button>
             </form>
         </p>
     {% endif %}
-    {% for comment in video.comment_set.all %}
+    {% for comment in shorts.shcomment_set.all %}
         <div class="card mb-3">
             <div class="card-header">
                 <span class="font-weight-bold">{{ comment.user.username }}</span>

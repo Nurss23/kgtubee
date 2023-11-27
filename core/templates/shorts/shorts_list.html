@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        {% for shorts in shorts_list %}
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <a href="/shorts/{{ shorts.id }}/">
+                    <video width="95%">
+                        <source src="{{ shorts.file_path.url }}">
+                    </video>
+                    <h3>{{ shorts.name }}</h3>
+                    <span><img height="20px" src="{% static 'like.svg' %}" alt=""> {{ shorts.likes }}</span> 
+                    <span>
+                    {% if shorts.author and shorts.author.profile %}
+                        <a href="{% url 'profile-detail' shorts.author.profile.id %}">
+                            | {{ shorts.author.username }}
+                        </a>
+                    {% endif %}
+                    </span> 
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
