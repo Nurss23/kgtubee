@@ -85,7 +85,15 @@
             <input class="form-control me-2" type="text" name="key_word" placeholder="Введите">
             <button class="btn btn-dark">Поиск</button>
           </form>
-          <img src="{{ request.user.profile.photo.url }}" height="50px" alt="">
+          {% if request.user.profile %}
+          <div>
+            <img src="{{ request.user.profile.photo.url }}" height="50px" alt="">
+            <a href="{% url 'profile-detail' request.user.profile.id %}"><br>
+              {{ request.user.profile.user }}
+            </a>
+          </div>
+        {% endif %}
+          <!-- <img src="{{ request.user.profile.photo.url }}" height="50px" alt=""> -->
         </div>
       </div>
     </nav>
