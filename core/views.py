@@ -105,6 +105,27 @@ def profile_detail(request, id):
 #     # videos_list = Video.objects.filter(author=profile_object.user)
 #     context["videos_list"] = videos_list 
 
+# def profile_detail(request, id):
+#     context = {}
+#     profile_object = Profile.objects.get(id=id)
+#     context["profile_object"] = profile_object
+
+#     subscribers_qty = profile_object.subscribers.count()
+#     # subscribers_qty = User.objects.filter(subscriptions=profile_object).count()
+#     context["subscribers_qty"] = subscribers_qty
+
+#     # [video_1, video_2, ...] видео этого пользователя
+#     videos_list = profile_object.user.video_set.all()
+#     # videos_list = Video.objects.filter(author=profile_object.user)
+#     context["videos_list"] = videos_list 
+
+
+#     return render(
+#         request,
+#         'profile.html',
+#         context
+#     )
+    
 def profile_update(request, id):
     context = {}
     profile_object = Profile.objects.get(id=id)
@@ -165,19 +186,19 @@ def profile_delete(request, id):
     else:
         return HttpResponse("Нет доступа")
     
-# def subscriber_add(request,id):
-#     if request.method == "POST":
-#         profile_object = Profile.objects.get(id=id)
-#         profile_object.subscribers.add(request.user)
-#         profile_object.save()
-#         return redirect(profile_detail, id=profile_object.id)
+def subscriber_add(request,id):
+    if request.method == "POST":
+        profile_object = Profile.objects.get(id=id)
+        profile_object.subscribers.add(request.user)
+        profile_object.save()
+        return redirect(profile_detail, id=profile_object.id)
 
-# def subscriber_remove(request,id):
-#     if request.method == "POST":
-#         profile_object = Profile.objects.get(id=id)
-#         profile_object.subscribers.remove(request.user)
-#         profile_object.save()
-#         return redirect(profile_detail, id=profile_object.id)
+def subscriber_remove(request,id):
+    if request.method == "POST":
+        profile_object = Profile.objects.get(id=id)
+        profile_object.subscribers.remove(request.user)
+        profile_object.save()
+        return redirect(profile_detail, id=profile_object.id)
 
 def registration(request):
     if request.user.is_authenticated:

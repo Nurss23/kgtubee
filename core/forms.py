@@ -15,13 +15,6 @@ class UserCreateForm(forms.ModelForm):
             "username", "password", 
             "first_name", "last_name"
             ]
-        
-# class UserCreateForm(forms.Form):
-#     username = forms.CharField(label="Логин", widget=forms.TextInput(attrs={'class':'form-input'}))
-#     password  = forms.CharField(label="Пароль", widget=forms.PasswordInput(attrs={'class':'form-input'}))
-#     first_name = forms.CharField(label="Имя", widget=forms.TextInput(attrs={'class':'form-input'}))
-#     last_name = forms.CharField(label="Фамилия", widget=forms.TextInput(attrs={'class':'form-input'}))
-
 
 class UserAuthForm(forms.Form):
     username = forms.CharField(max_length=150)

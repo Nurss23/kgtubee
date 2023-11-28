@@ -54,6 +54,7 @@ class Shorts(models.Model):
     
     created_by = models.DateTimeField(auto_now_add=True)
     updated_by = models.DateTimeField(auto_now=True,blank=True, null=True)
+    # updated_by = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.name
     
@@ -70,6 +71,7 @@ class ShComment(models.Model):
     )
     created_by = models.DateTimeField(auto_now_add=True)
     updated_by = models.DateTimeField(auto_now=True,blank=True, null=True)
+    # updated_by = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.txt[:30]
@@ -84,6 +86,8 @@ class ShortsView(models.Model):
         on_delete=models.CASCADE
     )
     created_by = models.DateTimeField(auto_now_add=True)
+    # start_v = models.TimeField(auto_now_add=True)
+    # end_v = models.TimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Просмотр"
