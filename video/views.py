@@ -1,18 +1,31 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from .forms import *
 from django.contrib import messages
+from django.views import View
 
 
 def videos(request):
     videos_list = Video.objects.all()
     context = {"videos_list": videos_list}
-    return render(request, 'videos.html', context)
+    return render(
+        request,
+        'videos.html',
+        context
+    )
+
 
 def video(request, id):
     # 7
     # SELECT * FROM video_video WHERE id = 7;
     video_object = Video.objects.get(id=id)
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return HttpResponse('Вы не авторизованы', status=401)
+    try:
+        video_object = Video.objects.get(id=id)
+    except:
+        return HttpResponse("Не найдено", status=404)
     context = {}
     if request.user.is_authenticated:
         video_view, created = VideoView.objects.get_or_create(
@@ -67,17 +80,46 @@ def video_add(request):
         video_object.save()
         return redirect(video, id=video_object.id)
 
-def video_update(request, id):
-    video_object = Video.objects.get(id=id)
-    context = {"video": video_object}
+# def video_update(request, id):
+#     video_object = Video.objects.get(id=id)
+#     context = {"video": video_object}
 
-    if request.method == "POST":
-        name = request.POST["video_name"]
-        video_object.name = name
-        video_object.save()
-        return redirect(video, id=video_object.id)
+#     if request.method == "POST":
+#         name = request.POST["video_name"]
+#         video_object.name = name
+#         video_object.save()
+#         return redirect(video, id=video_object.id)
 
-    return render(request, 'video_update.html', context)
+#     return render(request, 'video_update.html', context)
+
+class VideoUpdate(View):
+    # read
+    def get(self, request, *args, **kwargs):
+        context = {}
+        video_object = Video.objects.get(id=kwargs.get("pk"))
+        video_form = VideoForm(
+            instance=video_object,
+            )
+        context["video_form"] = video_form
+        return render(request, "video_update.html", context)
+
+    # update
+    def post(self, request, *args, **kwargs):
+        video_object = Video.objects.get(id=kwargs.get("pk"))
+        if request.user == video_object.author:
+            video_form = VideoForm(
+                instance=video_object,
+                data=request.POST,
+                files=request.FILES,
+            )
+            if video_form.is_valid():
+                video_form.save()
+                messages.success(request, "Профиль успешно обновлён!")
+                return redirect("video-update-cbv", pk=video_object.id)
+            else:
+                return HttpResponse("Данные не валидны", status=400)
+        else:
+            return HttpResponse("Нет доступа", status=403)
 
 def video_delete(request, id):
     video_object = Video.objects.get(id=id)

@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect, HttpResponse
 from .models import *
 from .forms import *
 from django.contrib import messages
+from django.views.generic import ListView
 
 # Create your views here.
 def playlists(request):
     # SELECT * FROM UserPlayList;
     query_result = UserPlayList.objects.all()
-
     # query_result является списком 
     context = {"objects_list": query_result}
 
@@ -17,9 +17,8 @@ def playlists(request):
         context
     )
 
-# def playlist(request, id):
-#     playlist_object = UserPlayList.objects.get(id=id)
-#     return render(request, 'playlist.html', {"playlist": playlist_object})  
+class PlayListView(ListView):
+    model = UserPlayList 
 
 def playlist_add(request):
     if request.method == "POST":

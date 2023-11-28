@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
+from django.views import View
 # Create your views here.
 
 # def homepage(request):
@@ -17,14 +18,28 @@ def homepage(request):
     context = {"videos_list": videos_list}
     return render(request, "home.html",context)
 
-def about_view(request):
-    return render(request, 'about.html')
+# def about_view(request):
+#     return render(request, 'about.html')
 
-def contacts_view(request):
-    return render(request, 'contacts.html')
+# def contacts_view(request):
+#     return render(request, 'contacts.html')
 
-def team_view(request):
-    return render(request, 'team.html')
+# def team_view(request):
+#     return render(request, 'team.html')
+
+class TypicalTemplateView(View):
+    template_name = ''
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+
+class AboutView(TypicalTemplateView):
+    template_name = 'about.html'
+
+
+class TeamView(TypicalTemplateView):
+    template_name = 'team.html'
 
 def search(request):
     key_word = request.GET["key_word"]
@@ -111,13 +126,41 @@ def profile_update(request, id):
     else:
         return HttpResponse("Нет доступа")
     
+class ProfileUpdate(View):
+    # read
+    def get(self, request, *args, **kwargs):
+        context = {}
+        profile_object = Profile.objects.get(id=kwargs.get("pk"))
+        profile_form = ProfileForm(instance=profile_object)
+        context["profile_form"] = profile_form
+        return render(request, "profile_update.html", context)
+
+    # update
+    def post(self, request, *args, **kwargs):
+        profile_object = Profile.objects.get(id=kwargs.get("pk"))
+        if request.user == profile_object.user:
+            profile_form = ProfileForm(
+                instance=profile_object,
+                data=request.POST,
+                files=request.FILES,
+            )
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, "Профиль успешно обновлён!")
+                return redirect("profile-update-cbv", pk=profile_object.id)
+            else:
+                return HttpResponse("Данные не валидны", status=400)
+        else:
+            return HttpResponse("Нет доступа", status=403)
+    
 def profile_delete(request, id):
     profile_object = Profile.objects.get(id=id)
     if request.user == profile_object.user:
         context = {"profile_object": profile_object}
         if request.method == "POST":
             profile_object.delete()
-            return redirect(homepage)
+            # return redirect(homepage)
+            return redirect("home")
         return render(request, "profile_delete.html", context)
     else:
         return HttpResponse("Нет доступа")
@@ -137,6 +180,8 @@ def profile_delete(request, id):
 #         return redirect(profile_detail, id=profile_object.id)
 
 def registration(request):
+    if request.user.is_authenticated:
+        return redirect("home")
     context = {}
     if request.method == "POST":
         registration_form = UserCreateForm(request.POST)
@@ -144,6 +189,10 @@ def registration(request):
             new_user = registration_form.save(commit=False)
             new_user.set_password(request.POST["password"])
             new_user.save()
+            Profile.objects.create(
+                channel_name=new_user.username,
+                user=new_user
+            )
             messages.success(request, "Вы успешно прошли регитсрацию")
             return redirect(sign_in)
     context["registration_form"] = UserCreateForm()
@@ -177,4 +226,5 @@ def sign_in(request):
 
 def sign_out(request):
     logout(request)
-    return redirect(homepage)
+    # return redirect(homepage)
+    return redirect("home")
