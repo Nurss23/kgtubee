@@ -19,6 +19,7 @@ class TestVideoDetail(TestCase):
         # print(video_object.name)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, video_object.name)
+
 class TestVideoList(TestCase):
     def test_video_list_should_success(self):
         for i in range(3):
@@ -33,3 +34,13 @@ class TestVideoList(TestCase):
         self.assertContains(response, "test video number 0")
         self.assertContains(response, "test video number 1")
         self.assertContains(response, "test video number 2")
+
+# class TestCommentVideo(TestCase):
+#     def test_comment_video_page_should_success(self):
+#         comment_object = Video.objects.create(
+#             video="/static/video/test_video.mp4",
+#             txt = "test comment 1"
+#             user = 
+#         )
+#         response = self.client.get(f'/video/{comment_object.id}/')
+#         self.assertEqual(response.status_code, 200)

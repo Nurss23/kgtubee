@@ -1,6 +1,6 @@
 import factory
 from django.contrib.auth.models import User
-from .models import Video
+from .models import Video, Comment
 from core.models import Profile
 
 
@@ -17,7 +17,6 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     channel_name = 'test channel'
     user = factory.SubFactory(UserFactory)
 
-
 class VideoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Video
@@ -25,3 +24,10 @@ class VideoFactory(factory.django.DjangoModelFactory):
     file_path = factory.django.FileField(file_path="/static/video/test_video.mp4") 
     name = factory.Sequence(lambda n: f"Test video {n}")
     author = factory.SubFactory(UserFactory)
+
+class CommentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Comment
+    txt = factory.Sequence(lambda n: f"Test comment {n}")
+    user = factory.SubFactory(UserFactory)
+    video = factory.django.FileField(file_path="/static/video/test_video.mp4") 
