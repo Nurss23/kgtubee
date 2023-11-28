@@ -35,12 +35,21 @@ class TestVideoList(TestCase):
         self.assertContains(response, "test video number 1")
         self.assertContains(response, "test video number 2")
 
-# class TestCommentVideo(TestCase):
-#     def test_comment_video_page_should_success(self):
-#         comment_object = Video.objects.create(
-#             video="/static/video/test_video.mp4",
-#             txt = "test comment 1"
-#             user = 
-#         )
-#         response = self.client.get(f'/video/{comment_object.id}/')
-#         self.assertEqual(response.status_code, 200)
+class TestCommentVideo(TestCase):
+    # def test_comment_on_video_should_success(self):
+    #     video_object = VideoFactory()
+    #     comment_object = Comment.objects.create(
+    #         txt="test comment 1",
+    #         # video = VideoFactory()
+    #     )
+    #     response = self.client.get(f'/video/{video_object.id}/')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertContains(response, comment_object.txt)
+    def test_comment_via_factory_boy(self):
+        comment_object = CommentFactory()
+        video_object = VideoFactory()
+        response = self.client.get(f'/video/{video_object.id}/')
+        print(video_object.name)
+        print(comment_object.txt)
+        self.assertEqual(response.status_code, 200)
+        # self.assertContains(response, comment_object.txt)

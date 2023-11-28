@@ -14,7 +14,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 class ProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Profile
-    channel_name = 'test channel'
+    channel_name = 'test_channel'
     user = factory.SubFactory(UserFactory)
 
 class VideoFactory(factory.django.DjangoModelFactory):
@@ -28,6 +28,7 @@ class VideoFactory(factory.django.DjangoModelFactory):
 class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Comment
-    txt = factory.Sequence(lambda n: f"Test comment {n}")
+    txt = 'Test comment'
+    # txt = factory.Sequence(lambda n: f"Test comment {n}")
     user = factory.SubFactory(UserFactory)
-    video = factory.django.FileField(file_path="/static/video/test_video.mp4") 
+    video = factory.SubFactory(VideoFactory) 
