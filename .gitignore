@@ -1,8 +1,6 @@
-media/
+media/*
 !media/static
 db.sqlite3
-__pycache__/
+__pychache__/
 *.pyc
 venv/
-# static/
-# !like.svg
