@@ -35,21 +35,35 @@ class TestVideoList(TestCase):
         self.assertContains(response, "test video number 1")
         self.assertContains(response, "test video number 2")
 
-class TestCommentVideo(TestCase):
-    # def test_comment_on_video_should_success(self):
-    #     video_object = VideoFactory()
-    #     comment_object = Comment.objects.create(
-    #         txt="test comment 1",
-    #         # video = VideoFactory()
-    #     )
-    #     response = self.client.get(f'/video/{video_object.id}/')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertContains(response, comment_object.txt)
-    def test_comment_via_factory_boy(self):
-        comment_object = CommentFactory()
+class TestComment(TestCase):
+    def test_comments_in_video_should_exist(self):
         video_object = VideoFactory()
+
+        text_comments = []
+        for i in range(3):
+            new_comment = CommentFactory(
+                video=video_object
+            )
+            text_comments.append(new_comment.txt)
+
         response = self.client.get(f'/video/{video_object.id}/')
-        print(video_object.name)
-        print(comment_object.txt)
         self.assertEqual(response.status_code, 200)
-        # self.assertContains(response, comment_object.txt)
+
+        for i in range(3):
+            # print(text_comments[i])
+            self.assertContains(response, text_comments[i])
+    
+    def test_add_comment_should_succes(self):
+        video_object = VideoFactory()
+        user_object = UserFactory()
+        self.client.force_login(user_object)
+        self.client.post(
+            path=f'/video/{video_object.id}/',
+            data={"txt":"test create comment"}
+        )
+        Comments = Comment.objects.filter(
+            video=video_object,
+            txt="test create comment",
+            user=user_object
+        )
+        self.assertTrue(Comments.count()>0)

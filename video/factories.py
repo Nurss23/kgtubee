@@ -28,7 +28,7 @@ class VideoFactory(factory.django.DjangoModelFactory):
 class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Comment
-    txt = 'Test comment'
-    # txt = factory.Sequence(lambda n: f"Test comment {n}")
+
     user = factory.SubFactory(UserFactory)
-    video = factory.SubFactory(VideoFactory) 
+    video = factory.SubFactory(VideoFactory)
+    txt = factory.Sequence(lambda n: f"comment number {n}") # comment number 0, comment number 1 ...

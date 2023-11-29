@@ -186,19 +186,19 @@ def profile_delete(request, id):
     else:
         return HttpResponse("Нет доступа")
     
-def subscriber_add(request,id):
-    if request.method == "POST":
-        profile_object = Profile.objects.get(id=id)
-        profile_object.subscribers.add(request.user)
-        profile_object.save()
-        return redirect(profile_detail, id=profile_object.id)
+# def subscriber_add(request,id):
+#     if request.method == "POST":
+#         profile_object = Profile.objects.get(id=id)
+#         profile_object.subscribers.add(request.user)
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)
 
-def subscriber_remove(request,id):
-    if request.method == "POST":
-        profile_object = Profile.objects.get(id=id)
-        profile_object.subscribers.remove(request.user)
-        profile_object.save()
-        return redirect(profile_detail, id=profile_object.id)
+# def subscriber_remove(request,id):
+#     if request.method == "POST":
+#         profile_object = Profile.objects.get(id=id)
+#         profile_object.subscribers.remove(request.user)
+#         profile_object.save()
+#         return redirect(profile_detail, id=profile_object.id)
 
 def registration(request):
     if request.user.is_authenticated:
@@ -232,7 +232,7 @@ def sign_in(request):
             if user_object:
                 login(request, user_object)
                 messages.success(request, "Успешно авторизовано!")
-                return redirect(homepage)
+                return redirect('home')
             else:
                 messages.error(request, "Неверный логин или пароль")
         else:
