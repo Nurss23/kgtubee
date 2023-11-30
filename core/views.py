@@ -41,6 +41,9 @@ class AboutView(TypicalTemplateView):
 class TeamView(TypicalTemplateView):
     template_name = 'team.html'
 
+def contacts_view(request):
+    return render(request, 'contacts.html')
+
 def search(request):
     key_word = request.GET["key_word"]
     # SELECT * FROM Video WHERE name LIKE '%key_word%'

@@ -29,7 +29,7 @@ urlpatterns = [
     path('', videos, name="home"),
     path('about/', AboutView.as_view()),
     path('team/', TeamView.as_view()),
-    # path('contacts/', contacts_view),
+    path('contacts/', contacts_view),
     # path('our_team/', team_view),
     path('search/', search, name='search'), # from core.views import search
     path('playlists/', playlists),
