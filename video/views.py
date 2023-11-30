@@ -3,11 +3,14 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 from django.views import View
+from .filters import VideoFilter
 
 
 def videos(request):
-    videos_list = Video.objects.all()
-    context = {"videos_list": videos_list}
+    context = {}
+    filter_object = VideoFilter(request.GET, Video.objects.all())
+    context["filter_object"] = filter_object
+
     return render(
         request,
         'videos.html',
@@ -114,7 +117,7 @@ class VideoUpdate(View):
             )
             if video_form.is_valid():
                 video_form.save()
-                messages.success(request, "Профиль успешно обновлён!")
+                messages.success(request, "Видео обновлено")
                 return redirect("video-update-cbv", pk=video_object.id)
             else:
                 return HttpResponse("Данные не валидны", status=400)

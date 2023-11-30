@@ -70,7 +70,8 @@ def profile_create(request):
             profile_object.user = request.user
             profile_object.save()
             messages.success(request, "Профиль и канал успешно созданы")
-            return redirect(f'/profile-detail/{profile_object.id}/')
+            # return redirect(f'/profile-detail/{profile_object.id}/')
+            return redirect('home')
         else:
             messages.error(request, "Ошибка при создании профиля")
 
